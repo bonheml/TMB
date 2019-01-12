@@ -11,3 +11,4 @@ jupyter
 seaborn
 matplotlib
 pysoundfile
+librosa

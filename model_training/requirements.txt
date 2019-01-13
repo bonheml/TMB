@@ -13,3 +13,4 @@ matplotlib
 pysoundfile
 librosa
 pillow
+tensorflow-hub

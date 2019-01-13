@@ -1,0 +1,15 @@
+pandas
+flask
+numpy
+scikit-learn
+tensorflow
+keras
+requests
+pathlib
+h5py
+scrapy
+jupyter
+seaborn
+matplotlib
+pysoundfile
+librosa

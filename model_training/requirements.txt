@@ -12,3 +12,4 @@ seaborn
 matplotlib
 pysoundfile
 librosa
+pillow

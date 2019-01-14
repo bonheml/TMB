@@ -1,9 +1,11 @@
 language: python
 python:
-        - 3.6
+  - 3.6
 cache: pip
 install:
-        - pip install -r web_api/requirements.txt
-        - pip install -e web_api
+  - pip install -r web_api/requirements.txt
+  - pip install -e web_api
 script:
-        - pytest web_api/
+  - pytest web_api/
+after_success:
+  - git subtree push --prefix web_api heroku master

@@ -9,3 +9,4 @@ h5py
 matplotlib
 librosa
 gunicorn
+pytest

@@ -5,6 +5,9 @@ cache: pip
 install:
   - pip install -r web_api/requirements.txt
   - pip install -e web_api
+before_script:
+  - echo -e "Host heroku.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 script:
   - pytest web_api/
 after_success:

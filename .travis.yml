@@ -1,13 +1,14 @@
 language: python
 python:
   - 3.6
+addons:
+  ssh_known_hosts:
+  - github.com
+  - heroku.com
 cache: pip
 install:
   - pip install -r web_api/requirements.txt
   - pip install -e web_api
-before_script:
-  - echo -e "Host heroku.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 script:
   - pytest web_api/
 after_success:

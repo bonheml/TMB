@@ -39,7 +39,9 @@ def generate_spec_from_sound(filename):
 
 
 if __name__ == "__main__":
-
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        files = list(pathlib.Path(sound_path).glob('*.mp3'))
+        soundfiles = [f.stem for f in pathlib.Path(sound_path).glob('*.mp3')]
+        specfiles = [f.stem for f in pathlib.Path(img_path).glob('*.png')]
+        res = list(set(soundfiles) - set(specfiles))
+        files = [pathlib.Path("{}{}.mp3".format(sound_path, f)) for f in res]
         executor.map(generate_spec_from_sound, files)

@@ -8,4 +8,5 @@ install:
 script:
   - pytest web_api/
 after_success:
+  - git remote add heroku ssh://git@heroku.com/tmb-api.git
   - git subtree push --prefix web_api heroku master

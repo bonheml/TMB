@@ -6,7 +6,6 @@ tensorflow
 keras
 pathlib
 h5py
-matplotlib
 librosa
 gunicorn
 pytest

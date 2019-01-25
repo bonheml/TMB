@@ -12,3 +12,7 @@ gunicorn
 pytest
 flask-restplus
 cerberus
+pillow
+librosa
+scipy
+requests-toolbelt

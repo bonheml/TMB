@@ -22,8 +22,8 @@ TEST_OUTPUT = [{'species': 'Corvus corvus', 'score': 0.9},
                {'species': 'Pyrrhula pyrrhula', 'score': 0.1}]
 
 curr_path = Path(__file__).parent
-sound_path = curr_path / 'test.mp3'
-img_path = curr_path / 'test.png'
+sound_path = str(curr_path / 'test.mp3')
+img_path = str(curr_path / 'test.png')
 
 testdata = [MultipartEncoder(fields={'file': ('test.png',
                                               open(img_path, 'rb'),

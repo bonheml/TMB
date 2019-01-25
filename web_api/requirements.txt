@@ -10,3 +10,5 @@ matplotlib
 librosa
 gunicorn
 pytest
+flask-restplus
+cerberus

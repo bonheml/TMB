@@ -27,8 +27,8 @@ class FlickrPhotoScrapper:
     def search_images(self, text):
         entries = []
 
-        for i, photo in enumerate(self.flickr.walk(tags=text.replace('_', ''),
-                                                   content_type=1)):
+        for i, photo in enumerate(self.flickr.walk(text=text.replace('_', ' '),
+                                                   media="photos")):
             if i >= self.max_size:
                 break
             filename = "{}_{}".format(photo.get('id'), photo.get('secret'))
@@ -68,7 +68,8 @@ class FlickrPhotoScrapper:
     def scrap_images(self, topics, save_path):
         topic_len = len(topics)
         for i, topic in enumerate(topics):
-            print('{}/{}: Scraping images from topic {}'
+            print('{}/{}: Scraping images of {}'
                   .format(i + 1, topic_len, topic))
             entries = self.search_images(topic)
+            print("Found {} images".format(len(entries)))
             self.save_images(entries, save_path)

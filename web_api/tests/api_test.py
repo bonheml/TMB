@@ -21,34 +21,15 @@ TEST_OUTPUT = [{'species': 'crex crex', 'score': 0.9},
                {'species': 'tadorna tadorna', 'score': 0.12},
                {'species': 'riparia riparia', 'score': 0.1}]
 
-res1 = {'apus apus': 0.03,
-        'pica pica': 0.02,
-        'coturnix coturnix': 0.02,
-        'crex crex': 0.02,
-        'corvus corax': 0.02,
-        'branta canadensis': 0.02,
-        'tyto alba': 0.02,
-        'sturnus vulgaris': 0.02,
-        'tadorna tadorna': 0.01,
-        'riparia riparia': 0.01}
+res1 = ['apus apus', 'pica pica', 'coturnix coturnix', 'crex crex', 'corvus corax', 'branta canadensis', 'tyto alba',
+        'sturnus vulgaris', 'tadorna tadorna', 'riparia riparia']
 
-res2 = {'anthus trivialis': 0.08,
-        'sitta europaea': 0.08,
-        'regulus regulus': 0.06,
-        'periparus ater': 0.05,
-        'prunella modularis': 0.05,
-        'corvus cornix': 0.05,
-        'parus major': 0.04,
-        'turdus viscivorus': 0.04,
-        'luscinia svecica': 0.04,
-        'phoenicurus phoenicurus': 0.04}
+res2 = ['anthus trivialis', 'sitta europaea', 'regulus regulus', 'periparus ater', 'prunella modularis',
+        'corvus cornix', 'parus major', 'turdus viscivorus', 'luscinia svecica', 'phoenicurus phoenicurus']
 
-res3 = {'crex crex': 0.46,
-        'corvus corax': 0.36,
-        'tadorna tadorna': 0.07,
-        'riparia riparia': 0.06}
+res3 = ['crex crex', 'corvus corax', 'tadorna tadorna', 'riparia riparia']
 
-res4 = {'anthus trivialis': 0.44}
+res4 = ['anthus trivialis']
 
 curr_path = Path(__file__).parent
 sound_path = str(curr_path / 'test.mp3')
@@ -77,7 +58,7 @@ def test_home(data, expected):
                            headers={'Content-Type': data.content_type})
     assert result.status_code == 200
     res = json.loads(result.data)['result']
-    res = {d['species']: round(d['score'], 2) for d in res}
+    res = [d['species'] for d in res]
     print(res)
     assert res == expected
 

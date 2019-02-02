@@ -58,7 +58,6 @@ def test_home(data, expected):
                            headers={'Content-Type': data.content_type})
     assert result.status_code == 200
     res = json.loads(result.data)['result']
-    res = [d['species'] for d in res]
-    print(res)
-    assert set(res) == set(expected)
+    res = set([d['species'] for d in res])
+    assert len(res - set(expected)) == 0
 

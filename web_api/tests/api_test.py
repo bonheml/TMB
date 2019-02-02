@@ -60,5 +60,5 @@ def test_home(data, expected):
     res = json.loads(result.data)['result']
     res = [d['species'] for d in res]
     print(res)
-    assert res == expected
+    assert set(res) == set(expected)
 

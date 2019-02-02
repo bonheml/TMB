@@ -21,34 +21,34 @@ TEST_OUTPUT = [{'species': 'crex crex', 'score': 0.9},
                {'species': 'tadorna tadorna', 'score': 0.12},
                {'species': 'riparia riparia', 'score': 0.1}]
 
-res1 = [{'species': 'apus apus', 'score': 0.030},
-        {'species': 'pica pica', 'score': 0.024},
-        {'species': 'coturnix coturnix', 'score': 0.022},
-        {'species': 'crex crex', 'score': 0.021},
-        {'species': 'corvus corax', 'score': 0.019},
-        {'species': 'branta canadensis', 'score': 0.018},
-        {'species': 'tyto alba', 'score': 0.017},
-        {'species': 'sturnus vulgaris', 'score': 0.016},
-        {'species': 'tadorna tadorna', 'score': 0.015},
-        {'species': 'riparia riparia', 'score': 0.015}]
+res1 = [{'species': 'apus apus', 'score': 0.03},
+        {'species': 'pica pica', 'score': 0.02},
+        {'species': 'coturnix coturnix', 'score': 0.02},
+        {'species': 'crex crex', 'score': 0.02},
+        {'species': 'corvus corax', 'score': 0.02},
+        {'species': 'branta canadensis', 'score': 0.02},
+        {'species': 'tyto alba', 'score': 0.02},
+        {'species': 'sturnus vulgaris', 'score': 0.02},
+        {'species': 'tadorna tadorna', 'score': 0.01},
+        {'species': 'riparia riparia', 'score': 0.01}]
 
-res2 = [{'species': 'anthus trivialis', 'score': 0.084},
-        {'species': 'sitta europaea', 'score': 0.082},
-        {'species': 'regulus regulus', 'score': 0.062},
-        {'species': 'periparus ater', 'score': 0.052},
-        {'species': 'prunella modularis', 'score': 0.051},
-        {'species': 'corvus cornix', 'score': 0.045},
-        {'species': 'parus major', 'score': 0.044},
-        {'species': 'turdus viscivorus', 'score': 0.039},
-        {'species': 'luscinia svecica', 'score': 0.039},
-        {'species': 'phoenicurus phoenicurus', 'score': 0.036}]
+res2 = [{'species': 'anthus trivialis', 'score': 0.08},
+        {'species': 'sitta europaea', 'score': 0.08},
+        {'species': 'regulus regulus', 'score': 0.06},
+        {'species': 'periparus ater', 'score': 0.05},
+        {'species': 'prunella modularis', 'score': 0.05},
+        {'species': 'corvus cornix', 'score': 0.05},
+        {'species': 'parus major', 'score': 0.04},
+        {'species': 'turdus viscivorus', 'score': 0.04},
+        {'species': 'luscinia svecica', 'score': 0.04},
+        {'species': 'phoenicurus phoenicurus', 'score': 0.04}]
 
 res3 = [{'species': 'crex crex', 'score': 0.46},
-        {'species': 'corvus corax', 'score': 0.359},
-        {'species': 'tadorna tadorna', 'score': 0.067},
-        {'species': 'riparia riparia', 'score': 0.057}]
+        {'species': 'corvus corax', 'score': 0.36},
+        {'species': 'tadorna tadorna', 'score': 0.07},
+        {'species': 'riparia riparia', 'score': 0.06}]
 
-res4 = [{'species': 'anthus trivialis', 'score': 0.442}]
+res4 = [{'species': 'anthus trivialis', 'score': 0.44}]
 
 curr_path = Path(__file__).parent
 sound_path = str(curr_path / 'test.mp3')
@@ -77,7 +77,6 @@ def test_home(data, expected):
                            headers={'Content-Type': data.content_type})
     assert result.status_code == 200
     res = json.loads(result.data)['result']
-    res = [{'species': d['species'], 'score': round(d['score'], 3)} for d in res]
-    print(res)
+    res = [{'species': d['species'], 'score': round(d['score'], 2)} for d in res]
     assert res == expected
 

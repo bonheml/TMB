@@ -5,8 +5,9 @@ from PIL import Image
 from scipy import misc, signal
 import librosa
 
-IMG_SIZE = (299,299)
+IMG_SIZE = (299, 299)
 RGB_IMG_SIZE = (299, 299, 3)
+
 
 def preprocess_song(audio, orig_sr, min_duration=10, target_sr=22050):
     y = librosa.core.resample(audio, orig_sr=orig_sr, target_sr=target_sr)

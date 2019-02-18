@@ -2,25 +2,19 @@ import os
 import uuid
 
 from preprocessing import generate_spec_from_sound, preprocess_image
+from model_interaction import predict
 from werkzeug.exceptions import BadRequest
-
-TEST_OUTPUT = [{'species': 'Corvus corvus', 'score': 0.9},
-               {'species': 'Anthus trivialis', 'score': 0.8},
-               {'species': 'Motacilla flava', 'score': 0.7},
-               {'species': 'Linaria cannabina', 'score': 0.6},
-               {'species': 'Carpodacus erythrinus', 'score': 0.5},
-               {'species': 'Acrocephalus palustris', 'score': 0.4},
-               {'species': 'Larus fuscus', 'score': 0.3},
-               {'species': 'Porzana porzana', 'score': 0.2},
-               {'species': 'Crex crex', 'score': 0.12},
-               {'species': 'Pyrrhula pyrrhula', 'score': 0.1}]
 
 
 class BirdDetector:
-    def __init__(self):
+    def __init__(self, audio_model, audio_labels, img_model, img_labels):
         self._input = None
         self._pred_old = None
         self._pred = None
+        self._audio_model = audio_model
+        self._audio_labels = audio_labels
+        self._img_model = img_model
+        self._img_labels = img_labels
 
     def predict(self, payload):
         if 'result' in payload:
@@ -38,21 +32,22 @@ class BirdDetector:
             self._calculate_mean()
         return self._pred
 
-
     def _classify_image(self):
+        fname = "{}.jpeg".format(uuid.uuid4().hex)
         image = preprocess_image(self._input)
-        # TODO: add model predictions to replace current result
-        self._pred = TEST_OUTPUT
+        image.save(fname)
+        self._pred = predict(fname, self._img_model, self._img_labels)
+        os.remove(fname)
 
     def _classify_audio(self):
-        fname = "{}.mp3".format(uuid.uuid4().hex)
-        self._input.save(fname)
-        spec = generate_spec_from_sound(fname)
-        spec.save('spec_created.png')
-        os.remove(fname)
-        # TODO : add model predictions to replace current result
-        self._pred = TEST_OUTPUT
-
+        audio_fname = "{}.mp3".format(uuid.uuid4().hex)
+        spec_fname = "{}.jpg".format(uuid.uuid4().hex)
+        self._input.save(audio_fname)
+        spec = generate_spec_from_sound(audio_fname)
+        spec.save(spec_fname)
+        self._pred = predict(spec_fname, self._audio_model, self._audio_labels)
+        os.remove(spec_fname)
+        os.remove(audio_fname)
 
     def _calculate_mean(self):
         pred_old = self._convert_to_dict(self._pred_old)
@@ -60,11 +55,10 @@ class BirdDetector:
         pred_mean = list()
         for p in pred:
             if p in pred_old:
-                pred_mean.append({'species': p ,
-                                  'score': (pred[p] + pred_old[p]) / 2 })
+                pred_mean.append({'species': p,
+                                  'score': (pred[p] + pred_old[p]) / 2})
         self._pred = pred_mean
         self._pred_old = None
-
 
     def _convert_to_dict(self, pred):
         res_dict = {}

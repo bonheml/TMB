@@ -1,13 +1,15 @@
 import React from 'react'
-import {StyleSheet, View, Text, Image} from 'react-native'
+import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
 
-// Component BirdItem.js
+// Component/BirdItem.js
 
 class BirdItem extends React.Component {
     render() {
-        const bird = this.props.bird
+        const {bird, displayBirdDetail} = this.props;
+        const bird_name = bird.scientific_name.replace(" ", "_");
         return (
-            <View style={styles.main_container}>
+            <TouchableOpacity style={styles.main_container}
+                              onPress={() => displayBirdDetail(bird_name)}>
                 <Image
                     style={styles.image}
                     source={{uri: bird.image_path.toString()}}
@@ -20,11 +22,13 @@ class BirdItem extends React.Component {
                         <Text style={styles.description_text}
                               numberOfLines={5}>{bird.overview}</Text>
                     </View>
-                    <View style={styles.date_container}>
-                        <Text style={styles.date_text}>Observé le {bird.view_date}</Text>
-                    </View>
+                    {bird.viewDate && (
+                        <View style={styles.date_container}>
+                            <Text style={styles.date_text}>Observé le {bird.view_date}</Text>
+                        </View>
+                    )}
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 }

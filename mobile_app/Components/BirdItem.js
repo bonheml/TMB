@@ -4,6 +4,17 @@ import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
 // Component/BirdItem.js
 
 class BirdItem extends React.Component {
+    _display_view_date() {
+        const bird = this.props.bird;
+        if (bird.view_date) {
+            return (
+                <View style={styles.date_container}>
+                    <Text style={styles.date_text}>Observé le {bird.view_date}</Text>
+                </View>
+            )
+        }
+    }
+
     render() {
         const {bird, displayBirdDetail} = this.props;
         const bird_name = bird.scientific_name.replace(" ", "_");
@@ -22,11 +33,7 @@ class BirdItem extends React.Component {
                         <Text style={styles.description_text}
                               numberOfLines={5}>{bird.overview}</Text>
                     </View>
-                    {bird.viewDate && (
-                        <View style={styles.date_container}>
-                            <Text style={styles.date_text}>Observé le {bird.view_date}</Text>
-                        </View>
-                    )}
+                    {this._display_view_date(bird)}
                 </View>
             </TouchableOpacity>
         )

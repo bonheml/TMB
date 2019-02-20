@@ -18,11 +18,11 @@ class BirdList extends React.Component {
     }
 
     _addPhoto() {
-        this.props.navigation.navigate("PhotoUpload")
+        this.props.navigation.navigate("PhotoCapture")
     }
 
     _addRecord() {
-        this.props.navigation.navigate("RecordUpload")
+        this.props.navigation.navigate("Record")
     }
 
     render() {

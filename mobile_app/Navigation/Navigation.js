@@ -3,15 +3,16 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation'
 import BirdList from '../Components/BirdList'
 import BirdResults from "../Components/BirdResults";
-import PhotoUpload from "../Components/PhotoUpload";
-import RecordUpload from "../Components/RecordUpload";
+import PhotoCapture from "../Components/PhotoCapture";
+import Record from "../Components/Record";
 import BirdDetail from "../Components/BirdDetail";
+import PhotoEdit from "../Components/PhotoEdit";
 
 const BirdStackNavigator = createStackNavigator({
     List: {
         screen: BirdList,
         navigationOptions: {
-          title: 'Mes oiseaux'
+          title: "Mes oiseaux"
         }
       },
     Detail: {
@@ -23,16 +24,22 @@ const BirdStackNavigator = createStackNavigator({
             title: 'Résultats'
         }
     },
-    PhotoUpload: {
-        screen: PhotoUpload,
+    PhotoCapture: {
+        screen: PhotoCapture,
         navigationOptions: {
-            title: 'Ajouter une photo'
+            title: "Prendre une photo"
         }
     },
-    RecordUpload: {
-        screen: RecordUpload,
+    Record: {
+        screen: Record,
         navigationOptions: {
-            title: 'Ajouter un enregistrement'
+            title: "Enregistrer un chant"
+        }
+    },
+    PhotoEdit: {
+        screen: PhotoEdit,
+        navigationOptions: {
+            title: "Envoyer la photo"
         }
     }
 });

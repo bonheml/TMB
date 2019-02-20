@@ -3,14 +3,14 @@ import {View, Text} from 'react-native';
 
 // Component/PhotoUpload.js
 
-class PhotoUpload extends React.Component {
+class Record extends React.Component {
     render() {
         return (
             <View>
-                <Text>Photo upload</Text>
+                <Text>Record upload</Text>
             </View>
         )
     }
 }
 
-export default PhotoUpload;
+export default Record;

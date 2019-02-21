@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         fontSize: 70,
-        color: '#DADEDF'
+        color: '#e2e5ec'
     },
     button: {
         backgroundColor: 'transparent',

@@ -1,5 +1,6 @@
 import React from 'react'
-import {FlatList, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {FlatList, View, TouchableOpacity, StyleSheet} from 'react-native'
+import {Icon} from 'native-base'
 import BirdItem from './BirdItem'
 import birds from '../Helpers/birdData'
 
@@ -7,15 +8,6 @@ class BirdList extends React.Component {
     _displayBirdDetail = (bird_name) => {
         this.props.navigation.navigate("Detail", {bird_name: bird_name})
     };
-
-    _displayIcon(sourceImage) {
-        return (
-          <Image
-            style={styles.icon}
-            source={sourceImage}
-          />
-        )
-    }
 
     _addPhoto() {
         this.props.navigation.navigate("PhotoCapture")
@@ -34,12 +26,12 @@ class BirdList extends React.Component {
                     renderItem={({item}) => <BirdItem bird={item}
                                                       displayBirdDetail={this._displayBirdDetail}/>}
                 />
-                <View style={styles.icons_container}>
+                <View style={styles.icon_container}>
                     <TouchableOpacity onPress={() => this._addPhoto()}>
-                        {this._displayIcon(require('../Images/camera.png'))}
+                        <Icon android="md-camera" ios="ios-camera" style={{fontSize: 50, color: '#2a2428'}}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this._addRecord()}>
-                        {this._displayIcon(require('../Images/record.png'))}
+                        <Icon android="md-mic" ios="ios-mic" style={{fontSize: 50, color: '#2a2428'}}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -48,19 +40,21 @@ class BirdList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    icon: {
-        width: 60,
-        height: 60,
-    },
-    icons_container: {
-        flexDirection: 'row',
+    icon_container: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: 15,
+        flexDirection: 'row',
         justifyContent: 'space-between',
+        backgroundColor: 'rgba(0, 0, 0, 0)'
     },
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor:"#e2e5ec"
     }
 });
 

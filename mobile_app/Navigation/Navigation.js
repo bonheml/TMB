@@ -12,34 +12,61 @@ const BirdStackNavigator = createStackNavigator({
     List: {
         screen: BirdList,
         navigationOptions: {
-          title: "Mes oiseaux"
+          title: "Mes oiseaux",
+            headerStyle: {
+                backgroundColor: '#46653c',
+            },
+            headerTintColor: '#e2e5ec',
         }
       },
     Detail: {
-      screen: BirdDetail
+        screen: BirdDetail,
+        navigationOptions: {
+          title: "Détails",
+            headerStyle: {
+                backgroundColor: '#46653c',
+            },
+            headerTintColor: '#e2e5ec',
+        }
     },
     Results: {
         screen: BirdResults,
         navigationOptions: {
-            title: 'Résultats'
+            title: 'Résultats',
+            headerStyle: {
+                backgroundColor: '#46653c',
+            },
+            headerTintColor: '#fff',
         }
     },
     PhotoCapture: {
         screen: PhotoCapture,
         navigationOptions: {
-            title: "Prendre une photo"
+            title: "Prendre une photo",
+            headerStyle: {
+                backgroundColor: '#46653c',
+            },
+            headerTintColor: '#fff',
         }
     },
     Record: {
         screen: Record,
         navigationOptions: {
-            title: "Enregistrer un chant"
+            title: "Enregistrer un chant",
+            headerStyle: {
+                backgroundColor: '#46653c',
+            },
+            headerTintColor: '#e2e5ec',
         }
     },
     PhotoEdit: {
         screen: PhotoEdit,
         navigationOptions: {
-            title: "Envoyer la photo"
+            title: "Envoyer la photo",
+            headerStyle: {
+                backgroundColor: '#46653c',
+            },
+            headerTintColor: '#fff',
         }
     }
 });

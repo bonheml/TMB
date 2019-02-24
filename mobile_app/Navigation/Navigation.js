@@ -1,12 +1,13 @@
 // Navigation/Navigation.js
 
-import { createStackNavigator, createAppContainer } from 'react-navigation'
-import BirdList from '../Components/BirdList'
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import BirdList from "../Components/BirdList";
 import BirdResults from "../Components/BirdResults";
 import PhotoCapture from "../Components/PhotoCapture";
 import Record from "../Components/Record";
 import BirdDetail from "../Components/BirdDetail";
 import PhotoEdit from "../Components/PhotoEdit";
+import RecordEdit from "../Components/RecordEdit";
 
 const BirdStackNavigator = createStackNavigator({
     List: {
@@ -36,7 +37,7 @@ const BirdStackNavigator = createStackNavigator({
             headerStyle: {
                 backgroundColor: '#46653c',
             },
-            headerTintColor: '#fff',
+            headerTintColor: '#e2e5ec',
         }
     },
     PhotoCapture: {
@@ -66,7 +67,17 @@ const BirdStackNavigator = createStackNavigator({
             headerStyle: {
                 backgroundColor: '#46653c',
             },
-            headerTintColor: '#fff',
+            headerTintColor: '#e2e5ec',
+        }
+    },
+    RecordEdit: {
+        screen: RecordEdit,
+        navigationOptions: {
+            title: "Envoyer l'enregistrement",
+            headerStyle: {
+                backgroundColor: "#46653c",
+            },
+            headerTintColor: "#e2e5ec",
         }
     }
 });

@@ -44,8 +44,8 @@ class Record extends React.Component {
                 await this.state.recorderInstance.stopAndUnloadAsync();
                 await this.setState({
                     recorderInstance : undefined,
-                    hasRecordPermission: this.state.hasRecordPermission,
                     isLoading: false,
+                    durationMillis: 0,
                 });
                 this.props.navigation.navigate('RecordEdit',
                     {recordURI: this.recordURI});
@@ -59,13 +59,11 @@ class Record extends React.Component {
                 console.log("start recording");
                 const recorderInstance = new Audio.Recording();
                 recorderInstance.setOnRecordingStatusUpdate(this._recorderCallback.bind(this));
-                recorderInstance.setProgressUpdateInterval(100);
+                recorderInstance.setProgressUpdateInterval(200);
                 await recorderInstance.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY);
                 this.recordURI = recorderInstance.getURI();
                 await recorderInstance.startAsync();
-                console.log(recorderInstance.isRecording);
                 this.setState({
-                    hasRecordPermission: this.state.hasRecordPermission,
                     recorderInstance: recorderInstance,
                     isLoading: false,
                 });
@@ -76,18 +74,11 @@ class Record extends React.Component {
 
     async _toggleRecord() {
         console.log("toggle record");
+        await this.setState({isLoading: true});
         if (this.state.recorderInstance === undefined) {
-            state = this.state;
-            state.isLoading = true;
-            await this.setState(state);
             await this._startRecord();
         }
         else {
-            const recorderState = await this.state.recorderInstance.getStatusAsync();
-            console.log(recorderState);
-            state = this.state;
-            state.isLoading = true;
-            await this.setState(state);
             await this._stopRecord();
         }
     }

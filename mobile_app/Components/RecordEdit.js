@@ -54,7 +54,6 @@ class RecordEdit extends React.Component {
 
     async _stopPlayer() {
         try {
-            console.log("Stop player");
             await this.state.playerInstance.stopAsync();
         } catch (error) {
             console.log(error);
@@ -68,7 +67,6 @@ class RecordEdit extends React.Component {
 
     async _startPlayer() {
         try {
-            console.log("start playing");
             if (this.state.positionMillis !== 0) {
                 await this.state.playerInstance.setPositionAsync(0);
             }
@@ -79,8 +77,6 @@ class RecordEdit extends React.Component {
     }
 
     async _togglePlay() {
-        console.log("toggle play");
-        console.log(this.state.playerStatus);
         if (!this.state.playerStatus.isPlaying && !this.state.playerStatus.isBuffering) {
             await this._startPlayer();
         }
@@ -108,7 +104,6 @@ class RecordEdit extends React.Component {
     }
 
     _sendRecord() {
-        console.log('send record');
         this._stopPlayer();
         this.props.navigation.navigate('Results',
             {

@@ -40,7 +40,6 @@ class Record extends React.Component {
 
     async _stopRecord() {
         try {
-                console.log("Stop recording");
                 await this.state.recorderInstance.stopAndUnloadAsync();
                 await this.setState({
                     recorderInstance : undefined,
@@ -56,7 +55,6 @@ class Record extends React.Component {
 
     async _startRecord() {
         try {
-                console.log("start recording");
                 const recorderInstance = new Audio.Recording();
                 recorderInstance.setOnRecordingStatusUpdate(this._recorderCallback.bind(this));
                 recorderInstance.setProgressUpdateInterval(200);
@@ -73,7 +71,6 @@ class Record extends React.Component {
     }
 
     async _toggleRecord() {
-        console.log("toggle record");
         await this.setState({isLoading: true});
         if (this.state.recorderInstance === undefined) {
             await this._startRecord();

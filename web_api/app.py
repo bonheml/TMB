@@ -27,7 +27,7 @@ result_fields = api.model('result', {
 
 output = api.model('response', {
     'result': fields.List(fields.Nested(result_fields), required=True,
-                          description='List of birds species along with their classification score')
+                          description='List of bird_list species along with their classification score')
 })
 
 

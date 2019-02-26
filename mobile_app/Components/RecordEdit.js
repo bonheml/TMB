@@ -105,10 +105,12 @@ class RecordEdit extends React.Component {
 
     _sendRecord() {
         this._stopPlayer();
+        console.log(this.recordURI, this.props.navigation.state.params.results);
         this.props.navigation.navigate('Results',
             {
                 mediaURI: this.recordURI,
-                mediaType: 'audio'
+                mediaType: 'audio',
+                results: this.props.navigation.state.params.results
             });
     }
 

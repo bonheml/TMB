@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, TouchableHighlight, Text, ActivityIndicator} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    TouchableHighlight,
+    Text,
+    ActivityIndicator
+} from 'react-native';
 import {Audio, Permissions} from 'expo';
 import moment from 'moment';
 import {Icon} from 'native-base';
@@ -17,7 +23,7 @@ class Record extends React.Component {
 
     }
 
-    _recorderCallback({ durationMillis, isRecording, isDoneRecording }) {
+    _recorderCallback({durationMillis, isRecording, isDoneRecording}) {
         state = this.state;
         state.durationMillis = durationMillis;
         this.setState(state);
@@ -32,7 +38,8 @@ class Record extends React.Component {
         if (!this.state.hasRecordPermission) {
             return (
                 <View style={styles.container}>
-                    <Text>Vous devez autoriser l'enregistrement pour afficher cette page</Text>
+                    <Text>Vous devez autoriser l'enregistrement pour afficher
+                        cette page</Text>
                 </View>
             )
         }
@@ -40,34 +47,41 @@ class Record extends React.Component {
 
     async _stopRecord() {
         try {
-                await this.state.recorderInstance.stopAndUnloadAsync();
-                await this.setState({
-                    recorderInstance : undefined,
-                    isLoading: false,
-                    durationMillis: 0,
-                });
-                this.props.navigation.navigate('RecordEdit',
-                    {recordURI: this.recordURI});
-            } catch(error) {
-                console.log(error);
+            await this.state.recorderInstance.stopAndUnloadAsync();
+            await this.setState({
+                recorderInstance: undefined,
+                isLoading: false,
+                durationMillis: 0,
+            });
+            let results = undefined;
+            if (this.props.navigation.state.params) {
+                results = this.props.navigation.state.params.results;
             }
+            this.props.navigation.navigate('RecordEdit',
+                {
+                    recordURI: this.recordURI,
+                    results: results
+                });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async _startRecord() {
         try {
-                const recorderInstance = new Audio.Recording();
-                recorderInstance.setOnRecordingStatusUpdate(this._recorderCallback.bind(this));
-                recorderInstance.setProgressUpdateInterval(200);
-                await recorderInstance.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY);
-                this.recordURI = recorderInstance.getURI();
-                await recorderInstance.startAsync();
-                this.setState({
-                    recorderInstance: recorderInstance,
-                    isLoading: false,
-                });
-            } catch(error) {
-                console.log(error);
-            }
+            const recorderInstance = new Audio.Recording();
+            recorderInstance.setOnRecordingStatusUpdate(this._recorderCallback.bind(this));
+            recorderInstance.setProgressUpdateInterval(200);
+            await recorderInstance.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY);
+            this.recordURI = recorderInstance.getURI();
+            await recorderInstance.startAsync();
+            this.setState({
+                recorderInstance: recorderInstance,
+                isLoading: false,
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async _toggleRecord() {
@@ -87,7 +101,7 @@ class Record extends React.Component {
     _displayLoading() {
         return (
             <View style={styles.loading_container}>
-                <ActivityIndicator size='large' />
+                <ActivityIndicator size='large'/>
             </View>
         )
     }
@@ -109,14 +123,22 @@ class Record extends React.Component {
             <View style={styles.container}>
                 <View style={styles.timer_container}>
                     <View style={styles.timer_wrapper}>
-                        <Text style={styles.timer}>{moment.utc(this.state.durationMillis).format("mm:ss.SS")}</Text>
+                        <Text
+                            style={styles.timer}>{moment.utc(this.state.durationMillis).format("mm:ss.SS")}</Text>
                     </View>
                 </View>
-                <View style={[styles.button_container, {backgroundColor: this._getToggleColor()}]}>
+                <View
+                    style={[styles.button_container, {backgroundColor: this._getToggleColor()}]}>
                     <View style={styles.button_wrapper}>
-                        <TouchableHighlight style={styles.button} onPress={() => {this._toggleRecord()}}>
+                        <TouchableHighlight style={styles.button}
+                                            onPress={() => {
+                                                this._toggleRecord()
+                                            }}>
                             <Icon name={'md-square'}
-                                  style={{color: this._getToggleColor(), fontSize: 50}}/>
+                                  style={{
+                                      color: this._getToggleColor(),
+                                      fontSize: 50
+                                  }}/>
                         </TouchableHighlight>
                     </View>
                 </View>
@@ -159,14 +181,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     loading_container: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });
 
 export default Record;

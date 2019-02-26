@@ -79,8 +79,13 @@ class PhotoCapture extends React.Component {
 
     _takePictureButtonPressed = async () => {
         if (this._cameraInstance) {
+            let results = undefined;
+            if (this.props.navigation.state.params) {
+                results = this.props.navigation.state.params.results;
+            }
             const photo = await this._cameraInstance.takePictureAsync();
-            this.props.navigation.navigate("PhotoEdit", {photo: photo});
+            this.props.navigation.navigate("PhotoEdit", {photo: photo,
+                results: results});
         }
     }
 }

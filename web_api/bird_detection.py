@@ -36,6 +36,7 @@ class BirdDetector:
         fname = "{}.jpeg".format(uuid.uuid4().hex)
         image = preprocess_image(self._input)
         image.save(fname)
+        image.close()
         self._pred = predict(fname, self._img_model, self._img_labels)
         os.remove(fname)
 

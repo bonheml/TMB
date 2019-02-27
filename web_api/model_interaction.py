@@ -15,6 +15,7 @@
 
 import numpy as np
 import tensorflow as tf
+import multiprocessing
 
 
 def load_graph(model_file):
@@ -60,14 +61,14 @@ def load_labels(label_file):
     return label
 
 
-def predict(image_file, model_file, label_file):
+def _predict(image_file, model_file, label_file):
+    final_res = []
     graph = load_graph(model_file)
     t = read_tensor_from_image_file(image_file)
     input_name = "import/Placeholder"
     output_name = "import/final_result"
     input_operation = graph.get_operation_by_name(input_name)
     output_operation = graph.get_operation_by_name(output_name)
-    final_res = []
 
     with tf.Session(graph=graph) as sess:
         results = sess.run(output_operation.outputs[0], {
@@ -79,4 +80,13 @@ def predict(image_file, model_file, label_file):
     labels = load_labels(label_file)
     for i in top_k:
         final_res.append({'species': labels[i], 'score': results[i]})
+    return final_res
+
+
+def predict(image_file, model_file, label_file):
+    # This is a workaround to prevent memory leaks from graph (
+    # https://github.com/tensorflow/tensorflow/issues/10408)
+    with multiprocessing.Pool(processes=1) as pool:
+        final_res = pool.starmap(_predict, [(image_file, model_file,
+                                            label_file)])
     return final_res

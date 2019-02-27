@@ -20,4 +20,4 @@ after_success:
   - chmod 600 /tmp/deploy_rsa
   - ssh-add /tmp/deploy_rsa
   - git remote add heroku ssh://git@heroku.com/tmb-api.git
-  - git subtree push --prefix web_api heroku master
+  - git subtree push --force --prefix web_api heroku master

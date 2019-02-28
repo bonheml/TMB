@@ -27,11 +27,11 @@ class RecordEdit extends React.Component {
         this.setState({
             positionMillis: playbackStatus.positionMillis,
             playerStatus: playbackStatus,
-            isLoading: false
         })
     };
 
     async componentDidMount() {
+        await this.setState({isLoading: true});
         const {status} = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
         this.recordURI = this.props.navigation.state.params.recordURI.toString();
         const playerInstance = new Audio.Sound();
@@ -41,19 +41,15 @@ class RecordEdit extends React.Component {
         const playerStatus = await playerInstance.getStatusAsync();
         await this.setState({
             hasRecordPermission: status === 'granted',
-            playerInstance: playerInstance, playerStatus: playerStatus
+            playerInstance: playerInstance,
+            playerStatus: playerStatus,
+            isLoading: false
         });
     }
 
-    _displayUnauthorised() {
-        if (!this.state.hasRecordPermission) {
-            return (
-                <View style={styles.container}>
-                    <Text>Vous devez autoriser l'enregistrement pour afficher
-                        cette page</Text>
-                </View>
-            )
-        }
+    async componentWillUnmount() {
+        this.state.playerInstance.setOnPlaybackStatusUpdate(null);
+        await this.state.playerInstance.unloadAsync();
     }
 
     async _stopPlayer() {
@@ -62,11 +58,6 @@ class RecordEdit extends React.Component {
         } catch (error) {
             console.log(error);
         }
-    }
-
-    async componentWillUnmount() {
-        this.state.playerInstance.setOnPlaybackStatusUpdate(null);
-        await this.state.playerInstance.unloadAsync();
     }
 
     async _startPlayer() {
@@ -107,36 +98,23 @@ class RecordEdit extends React.Component {
         )
     }
 
-    _sendRecord() {
-        this._stopPlayer();
-        this.props.navigation.navigate('Results',
-            {mediaURI: this.recordURI, mediaType: 'audio',});
+    _displayUnauthorised() {
+        return (
+            <View style={styles.container}>
+                <Text>Vous devez autoriser l'enregistrement pour afficher
+                    cette page</Text>
+            </View>
+        )
     }
 
-    _cancel() {
-        this._stopPlayer();
-        this.props.navigation.goBack();
-    }
-
-    render() {
-        if (!this.state.hasRecordPermission) {
-            return (
-                <View style={styles.container}>
-                    {this._displayUnauthorised()}
-                </View>
-            )
-        }
-        if (this.state.isLoading) {
-            return (
-                this._displayLoading()
-            )
-        }
+    _displayRecord() {
         return (
             <View style={styles.container}>
                 <View style={styles.timer_container}>
                     <View style={styles.timer_wrapper}>
-                        <Text
-                            style={styles.timer}>{moment.utc(this.state.positionMillis).format("mm:ss.SS")}</Text>
+                        <Text style={styles.timer}>
+                            {moment.utc(this.state.positionMillis).format("mm:ss.SS")}
+                        </Text>
                     </View>
                 </View>
                 <View
@@ -168,6 +146,27 @@ class RecordEdit extends React.Component {
                 </View>
             </View>
         )
+    }
+
+    _sendRecord() {
+        this._stopPlayer();
+        this.props.navigation.navigate('Results',
+            {mediaURI: this.recordURI, mediaType: 'audio',});
+    }
+
+    _cancel() {
+        this._stopPlayer();
+        this.props.navigation.goBack();
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (this._displayLoading());
+        } else if (!this.state.hasRecordPermission) {
+            return (this._displayUnauthorised());
+        } else {
+            return (this._displayRecord());
+        }
     }
 }
 

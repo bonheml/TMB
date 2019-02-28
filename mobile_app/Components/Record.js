@@ -30,19 +30,12 @@ class Record extends React.Component {
     }
 
     async componentDidMount() {
+        await this.setState({isLoading: true});
         const {status} = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-        this.setState({hasRecordPermission: status === 'granted'});
-    }
-
-    _displayUnauthorised() {
-        if (!this.state.hasRecordPermission) {
-            return (
-                <View style={styles.container}>
-                    <Text>Vous devez autoriser l'enregistrement pour afficher
-                        cette page</Text>
-                </View>
-            )
-        }
+        this.setState({
+            hasRecordPermission: status === 'granted',
+            isLoading: false
+        });
     }
 
     async _stopRecord() {
@@ -54,7 +47,7 @@ class Record extends React.Component {
                 durationMillis: 0,
             });
             this.props.navigation.navigate('RecordEdit',
-                { recordURI: this.recordURI, });
+                {recordURI: this.recordURI,});
         } catch (error) {
             console.log(error);
         }
@@ -99,29 +92,28 @@ class Record extends React.Component {
         )
     }
 
-    render() {
-        if (!this.state.hasRecordPermission) {
-            return (
-                <View style={styles.container}>
-                    {this._displayUnauthorised()}
-                </View>
-            )
-        }
-        if (this.state.isLoading) {
-            return (
-                this._displayLoading()
-            )
-        }
+    _displayUnauthorised() {
+        return (
+            <View style={styles.container}>
+                <Text>Vous devez autoriser l'enregistrement pour afficher
+                    cette page</Text>
+            </View>
+        )
+    }
+
+    _displayRecord() {
         return (
             <View style={styles.container}>
                 <View style={styles.timer_container}>
                     <View style={styles.timer_wrapper}>
-                        <Text
-                            style={styles.timer}>{moment.utc(this.state.durationMillis).format("mm:ss.SS")}</Text>
+                        <Text style={styles.timer}>
+                            {moment.utc(this.state.durationMillis).format("mm:ss.SS")}
+                        </Text>
                     </View>
                 </View>
                 <View
-                    style={[styles.button_container, {backgroundColor: this._getToggleColor()}]}>
+                    style={[styles.button_container,
+                        {backgroundColor: this._getToggleColor()}]}>
                     <View style={styles.button_wrapper}>
                         <TouchableHighlight style={styles.button}
                                             onPress={() => {
@@ -137,6 +129,16 @@ class Record extends React.Component {
                 </View>
             </View>
         )
+    }
+
+    render() {
+        if (this.state.isLoading) {
+            return (this._displayLoading());
+        } else if (!this.state.hasRecordPermission) {
+            return (this._displayUnauthorised());
+        } else {
+            return (this._displayRecord());
+        }
     }
 }
 

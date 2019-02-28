@@ -1,5 +1,12 @@
 import React from 'react'
-import {StyleSheet, View, Text, Image, TouchableOpacity, Button} from 'react-native'
+import {
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    Button
+} from 'react-native'
 
 class BirdItem extends React.Component {
     _display_view_date() {
@@ -17,11 +24,14 @@ class BirdItem extends React.Component {
 
     _display_button() {
         return (
-            <Button onPress={() => this.props.buttonAction.function(this.props.bird)}
+            <View style={styles.button_wrapper}>
+                <Button
+                    onPress={() => this.props.buttonAction.function(this.props.bird)}
                     title={this.props.buttonAction.title}
                     color={this.props.buttonAction.color}
                     style={styles.button}
-            />
+                />
+            </View>
         )
     }
 
@@ -75,9 +85,6 @@ class BirdItem extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    button: {
-        margin: 5,
-    },
     main_container: {
         height: 190,
         flexDirection: 'row'
@@ -90,6 +97,11 @@ const styles = StyleSheet.create({
     },
     button_container: {
         flex: 1,
+    },
+    button_wrapper: {
+        marginLeft: 5,
+        marginRight: 5,
+        marginBottom:10,
     },
     image: {
         width: 120,

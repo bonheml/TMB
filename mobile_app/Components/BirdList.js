@@ -46,22 +46,26 @@ class BirdList extends React.Component {
         };
         return (
             <View style={styles.container}>
-                <FlatList
-                    data={this.props.observedBirds}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({item}) => <BirdItem bird={item}
-                                                      displayBirdDetail={this._displayBirdDetail}
-                                                      buttonAction={buttonAction}/>}
-                />
-                <View style={styles.icon_container}>
-                    <TouchableOpacity onPress={() => this._addPhoto()}>
-                        <Icon android="md-camera" ios="ios-camera"
-                              style={{fontSize: 50, color: "#2a2428"}}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this._addRecord()}>
-                        <Icon android="md-mic" ios="ios-mic"
-                              style={{fontSize: 50, color: "#2a2428"}}/>
-                    </TouchableOpacity>
+                <View style={styles.list_container}>
+                    <FlatList
+                        data={this.props.observedBirds}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({item}) => <BirdItem bird={item}
+                                                          displayBirdDetail={this._displayBirdDetail}
+                                                          buttonAction={buttonAction}/>}
+                    />
+                </View>
+                <View style={styles.container}>
+                    <View style={styles.icon_container}>
+                        <TouchableOpacity onPress={() => this._addPhoto()}>
+                            <Icon android="md-camera" ios="ios-camera"
+                                  style={{fontSize: 50, color: "#2a2428"}}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this._addRecord()}>
+                            <Icon android="md-mic" ios="ios-mic"
+                                  style={{fontSize: 50, color: "#2a2428"}}/>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         )
@@ -92,7 +96,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#e2e5ec"
-    }
+    },
+    list_container: {
+        flex: 7,
+    },
 });
 
 export default connect(mapStateToProps)(BirdList)

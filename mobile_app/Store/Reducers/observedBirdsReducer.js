@@ -1,5 +1,3 @@
-// Store/Reducers/favoriteReducer.js
-
 const initialState = {observedBirds: []};
 
 function updateObservedBirds(state = initialState, action) {

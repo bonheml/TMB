@@ -17,22 +17,22 @@ import moment from 'moment';
 class BirdResults extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {birds: undefined, results: undefined, isLoading: false}
+        this.state = {birds: undefined, isLoading: false}
     }
 
     async componentDidMount() {
         await this.setState({isLoading: true});
         const media = this.props.navigation.state.params.mediaURI;
         const mediaType = this.props.navigation.state.params.mediaType;
-        const oldResults = this.props.navigation.state.params.results;
         try {
-            const {hasError, results, bird_list} = await predictBirds(media, mediaType, oldResults);
+            const {hasError, results, bird_list} = await predictBirds(media, mediaType, this.props.prevResults);
             if (hasError) {
                 console.log(results);
             }
             else {
+                this._dispatchResults(results);
                 loadBirdsFromList(bird_list).then((birds) => {
-                    this.setState({birds, results, isLoading: false})
+                    this.setState({birds, isLoading: false})
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -40,6 +40,11 @@ class BirdResults extends React.Component {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    _dispatchResults(results) {
+        const action = { type: "ADD_RESULTS", value: results };
+        this.props.dispatch(action);
     }
 
     _displayBirdDetail = (bird_name) => {
@@ -103,7 +108,8 @@ class BirdResults extends React.Component {
 const mapStateToProps = (state) => {
     console.log(state);
     return {
-        observedBirds: state.updateObservedBirds.observedBirds
+        observedBirds: state.updateObservedBirds.observedBirds,
+        prevResults: state.updatePreviousResults.prevResults
     }
 };
 

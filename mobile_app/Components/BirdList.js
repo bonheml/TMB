@@ -5,6 +5,17 @@ import BirdItem from "./BirdItem";
 import {connect} from "react-redux";
 
 class BirdList extends React.Component {
+    componentDidMount() {
+        this.subs = [this.props.navigation.addListener('willFocus',
+            () => this._removePreviousResults())]
+    }
+
+    componentWillUnmount() {
+        this.subs.forEach((sub) => {
+            sub.remove();
+        });
+    }
+
     _displayBirdDetail = (bird_name) => {
         this.props.navigation.navigate("Detail", {bird_name: bird_name})
     };
@@ -17,15 +28,22 @@ class BirdList extends React.Component {
         this.props.navigation.navigate("Record")
     }
 
+    _removePreviousResults() {
+        const action = {type: "REMOVE_RESULTS", value: undefined};
+        this.props.dispatch(action);
+    }
+
     _removeObservedBird = (bird) => {
-         const action = { type: "REMOVE_OBSERVATION", value: bird };
-         this.props.dispatch(action);
+        const action = {type: "REMOVE_OBSERVATION", value: bird};
+        this.props.dispatch(action);
     };
 
     render() {
-        const buttonAction = {function: this._removeObservedBird,
-                              title: "Supprimer des oiseaux observés",
-                              color: "#587175"};
+        const buttonAction = {
+            function: this._removeObservedBird,
+            title: "Supprimer des oiseaux observés",
+            color: "#587175"
+        };
         return (
             <View style={styles.container}>
                 <FlatList
@@ -51,9 +69,11 @@ class BirdList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    observedBirds: state.updateObservedBirds.observedBirds
-  }
+    console.log(state);
+    return {
+        observedBirds: state.updateObservedBirds.observedBirds,
+        prevResults: state.updatePreviousResults.prevResults
+    }
 };
 
 const styles = StyleSheet.create({

@@ -24,9 +24,11 @@ class RecordEdit extends React.Component {
     }
 
     _playerCallback = playbackStatus => {
-        this.setState({positionMillis: playbackStatus.positionMillis,
-                    playerStatus: playbackStatus,
-                    isLoading: false})
+        this.setState({
+            positionMillis: playbackStatus.positionMillis,
+            playerStatus: playbackStatus,
+            isLoading: false
+        })
     };
 
     async componentDidMount() {
@@ -37,8 +39,10 @@ class RecordEdit extends React.Component {
         playerInstance.setOnPlaybackStatusUpdate(this._playerCallback.bind(this));
         playerInstance.setProgressUpdateIntervalAsync(200);
         const playerStatus = await playerInstance.getStatusAsync();
-        await this.setState({hasRecordPermission: status === 'granted',
-            playerInstance: playerInstance, playerStatus: playerStatus});
+        await this.setState({
+            hasRecordPermission: status === 'granted',
+            playerInstance: playerInstance, playerStatus: playerStatus
+        });
     }
 
     _displayUnauthorised() {
@@ -105,13 +109,8 @@ class RecordEdit extends React.Component {
 
     _sendRecord() {
         this._stopPlayer();
-        console.log(this.recordURI, this.props.navigation.state.params.results);
         this.props.navigation.navigate('Results',
-            {
-                mediaURI: this.recordURI,
-                mediaType: 'audio',
-                results: this.props.navigation.state.params.results
-            });
+            {mediaURI: this.recordURI, mediaType: 'audio',});
     }
 
     _cancel() {

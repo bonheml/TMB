@@ -1,15 +1,18 @@
-import React from 'react'
+import React from "react"
 import {
     FlatList,
     View,
     ActivityIndicator,
     StyleSheet,
     TouchableOpacity
-} from 'react-native';
-import BirdItem from './BirdItem'
+} from "react-native";
+import {Icon} from "native-base";
+import {connect} from "react-redux";
+import BirdItem from "./BirdItem"
 import {loadBirdsFromList} from "../API/WikiAPI";
 import {predictBirds} from "../API/TmbAPI";
-import {Icon} from "native-base";
+import moment from 'moment';
+
 
 class BirdResults extends React.Component {
     constructor(props) {
@@ -47,30 +50,41 @@ class BirdResults extends React.Component {
     _displayLoading() {
         return (
             <View style={styles.loading_container}>
-                <ActivityIndicator size='large'/>
+                <ActivityIndicator size="large"/>
             </View>
         )
     }
 
     _addPhoto() {
-        this.props.navigation.navigate("PhotoCapture", {results: this.state.results})
+        this.props.navigation.navigate("PhotoCapture");
     }
 
     _addRecord() {
-        this.props.navigation.navigate("Record", {results: this.state.results})
+        this.props.navigation.navigate("Record");
     }
+
+    _addObservedBird = (bird) => {
+         bird['view_date'] = moment().format('DD-MM-YYYY');
+         const action = { type: "ADD_OBSERVATION", value: bird };
+         this.props.dispatch(action);
+         this.props.navigation.navigate("List");
+    };
 
     render() {
         if (this.state.isLoading) {
             return (this._displayLoading())
         }
+        const buttonAction = {function: this._addObservedBird,
+                              title: "Ajouter aux oiseaux observés",
+                              color: "#587175"};
         return (
             <View style={styles.container}>
                 <FlatList
                     data={this.state.birds}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({item}) => <BirdItem bird={item}
-                                                      displayBirdDetail={this._displayBirdDetail}/>}
+                                                      displayBirdDetail={this._displayBirdDetail}
+                                                      buttonAction={buttonAction}/>}
                 />
                 <View style={styles.icon_container}>
                     <TouchableOpacity onPress={() => this._addPhoto()}>
@@ -87,6 +101,11 @@ class BirdResults extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        observedBirds: state.observedBirds
+    }
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -94,31 +113,31 @@ const styles = StyleSheet.create({
         backgroundColor: "#e2e5ec"
     },
     icon_container: {
-        position: 'absolute',
+        position: "absolute",
         bottom: 0,
         left: 0,
         right: 0,
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: 'rgba(0, 0, 0, 0)'
+        flexDirection: "row",
+        justifyContent: "space-between",
+        backgroundColor: "rgba(0, 0, 0, 0)"
     },
     icon: {
         fontSize: 50,
         color: "#2a2428",
     },
     loading_container: {
-        position: 'absolute',
+        position: "absolute",
         left: 0,
         right: 0,
         top: 0,
         bottom: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: "#e2e5ec"
     }
 });
 
-export default BirdResults;
+export default connect(mapStateToProps)(BirdResults);

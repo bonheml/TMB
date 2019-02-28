@@ -1,7 +1,5 @@
 import React from 'react'
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native'
-
-// Component/BirdItem.js
+import {StyleSheet, View, Text, Image, TouchableOpacity, Button} from 'react-native'
 
 class BirdItem extends React.Component {
     _display_view_date() {
@@ -9,14 +7,27 @@ class BirdItem extends React.Component {
         if (bird.view_date) {
             return (
                 <View style={styles.date_container}>
-                    <Text style={styles.date_text}>Observé le {bird.view_date}</Text>
+                    <Text style={styles.date_text}>
+                        Observé le {bird.view_date}
+                    </Text>
                 </View>
             )
         }
     }
 
-    render() {
-        const {bird, displayBirdDetail} = this.props;
+    _display_button() {
+        return (
+            <Button onPress={() => this.props.buttonAction.function(this.props.bird)}
+                    title={this.props.buttonAction.title}
+                    color={this.props.buttonAction.color}
+                    style={styles.button}
+            />
+        )
+    }
+
+    _display_bird_card() {
+        const bird = this.props.bird;
+        const displayBirdDetail = this.props.displayBirdDetail;
         const bird_name = bird.scientific_name.replace(" ", "_");
         return (
             <TouchableOpacity style={styles.main_container}
@@ -27,7 +38,8 @@ class BirdItem extends React.Component {
                 />
                 <View style={styles.content_container}>
                     <View style={styles.header_container}>
-                        <Text style={styles.title_text}>{bird.common_name}</Text>
+                        <Text
+                            style={styles.title_text}>{bird.common_name}</Text>
                     </View>
                     <View style={styles.description_container}>
                         <Text style={styles.description_text}
@@ -38,12 +50,46 @@ class BirdItem extends React.Component {
             </TouchableOpacity>
         )
     }
+
+    render() {
+        if (this.props.buttonAction) {
+            return (
+                <View style={styles.container}>
+                    <View styles={styles.bird_container}>
+                        {this._display_bird_card()}
+                    </View>
+                    <View styles={styles.button_container}>
+                        {this._display_button()}
+                    </View>
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.container}>
+                    {this._display_bird_card()}
+                </View>
+            )
+        }
+
+    }
 }
 
 const styles = StyleSheet.create({
+    button: {
+        margin: 5,
+    },
     main_container: {
         height: 190,
         flexDirection: 'row'
+    },
+    container: {
+        flex: 1,
+    },
+    bird_container: {
+        flex: 5,
+    },
+    button_container: {
+        flex: 1,
     },
     image: {
         width: 120,
@@ -74,13 +120,13 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         color: '#666666'
     },
-  date_container: {
-    flex: 1
-  },
-  date_text: {
-    textAlign: 'right',
-    fontSize: 14
-  }
+    date_container: {
+        flex: 1
+    },
+    date_text: {
+        textAlign: 'right',
+        fontSize: 14
+    }
 });
 
 export default BirdItem

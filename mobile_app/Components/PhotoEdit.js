@@ -8,7 +8,6 @@ class PhotoEdit extends React.Component {
         this.props.navigation.navigate('Results',
             { mediaURI: photo.uri.toString(),
               mediaType: 'image',
-             results: this.props.navigation.state.params.results
             });
     }
 

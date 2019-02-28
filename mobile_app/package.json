@@ -15,7 +15,10 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-render-html": "^4.1.1",
     "react-native-webview": "git+https://github.com/react-native-community/react-native-webview.git",
-    "react-navigation": "^3.2.3"
+    "react-navigation": "^3.2.3",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-persist": "^5.10.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"

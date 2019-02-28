@@ -53,15 +53,8 @@ class Record extends React.Component {
                 isLoading: false,
                 durationMillis: 0,
             });
-            let results = undefined;
-            if (this.props.navigation.state.params) {
-                results = this.props.navigation.state.params.results;
-            }
             this.props.navigation.navigate('RecordEdit',
-                {
-                    recordURI: this.recordURI,
-                    results: results
-                });
+                { recordURI: this.recordURI, });
         } catch (error) {
             console.log(error);
         }

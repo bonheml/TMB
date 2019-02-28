@@ -1,4 +1,4 @@
-const initialState = {prevResults: []};
+const initialState = {prevResults: undefined};
 
 function updatePreviousResults(state = initialState, action) {
     let nextState = undefined;

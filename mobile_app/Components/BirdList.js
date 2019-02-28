@@ -52,7 +52,7 @@ class BirdList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    observedBirds: state.observedBirds
+    observedBirds: state.updateObservedBirds.observedBirds
   }
 };
 

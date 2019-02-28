@@ -1,4 +1,4 @@
-const initialState = {prev_results: []};
+const initialState = {prevResults: []};
 
 function updatePreviousResults(state = initialState, action) {
     let nextState = undefined;
@@ -6,13 +6,13 @@ function updatePreviousResults(state = initialState, action) {
         case 'ADD_RESULTS':
             nextState = {
                 ...state,
-                prev_results: action.value
+                prevResults: action.value
             };
             return nextState;
         case 'REMOVE_RESULTS':
             nextState = {
                 ...state,
-                prev_results: undefined
+                prevResults: undefined
             };
             return nextState;
         default:

@@ -89,4 +89,4 @@ def predict(image_file, model_file, label_file):
     with multiprocessing.Pool(processes=1) as pool:
         final_res = pool.starmap(_predict, [(image_file, model_file,
                                             label_file)])
-    return final_res
+    return final_res[0]

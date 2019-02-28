@@ -73,7 +73,6 @@ class BirdList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         observedBirds: state.updateObservedBirds.observedBirds,
         prevResults: state.updatePreviousResults.prevResults

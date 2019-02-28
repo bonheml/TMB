@@ -65,8 +65,6 @@ class BirdResults extends React.Component {
     _updateBirdPredictions() {
         const media = this.props.navigation.state.params.mediaURI;
         const mediaType = this.props.navigation.state.params.mediaType;
-        console.log(this.state.mediaURI, media);
-        console.log(this.state.mediaType, mediaType);
         if (this.state.mediaURI !== media || this.state.mediaType !== mediaType) {
             this._getBirdPredictions(media, mediaType);
         }

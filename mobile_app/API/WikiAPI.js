@@ -7,7 +7,6 @@ function idGenerator() {
     for (let i=0; i < 20; i++) {
         genId += randGenerator();
     }
-    console.log(genId);
     return genId;
 }
 

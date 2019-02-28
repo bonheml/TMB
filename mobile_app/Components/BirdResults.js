@@ -25,7 +25,6 @@ class BirdResults extends React.Component {
         const media = this.props.navigation.state.params.mediaURI;
         const mediaType = this.props.navigation.state.params.mediaType;
         const oldResults = this.props.navigation.state.params.results;
-        console.log(oldResults, media, mediaType);
         try {
             const {hasError, results, bird_list} = await predictBirds(media, mediaType, oldResults);
             if (hasError) {

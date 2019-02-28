@@ -1,5 +1,4 @@
 function _prepareFormData(uri, mediaType, previousResults) {
-    console.log(uri, mediaType, previousResults);
     const formData = new FormData();
     let uriParts = uri.split('.');
     let extType = uriParts[uriParts.length - 1];

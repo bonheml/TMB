@@ -17,13 +17,28 @@ import moment from 'moment';
 class BirdResults extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {birds: undefined, isLoading: false}
+        this.state = {
+            birds: undefined,
+            isLoading: false,
+            mediaURI: undefined,
+            mediaType: undefined
+        }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+        this._updateBirdPredictions();
+        this.subs = [this.props.navigation.addListener('willFocus',
+            () => this._updateBirdPredictions())]
+    }
+
+    componentWillUnmount() {
+        this.subs.forEach((sub) => {
+            sub.remove();
+        });
+    }
+
+    async _getBirdPredictions(media, mediaType) {
         await this.setState({isLoading: true});
-        const media = this.props.navigation.state.params.mediaURI;
-        const mediaType = this.props.navigation.state.params.mediaType;
         try {
             const {hasError, results, bird_list} = await predictBirds(media, mediaType, this.props.prevResults);
             if (hasError) {
@@ -32,13 +47,27 @@ class BirdResults extends React.Component {
             else {
                 this._dispatchResults(results);
                 loadBirdsFromList(bird_list).then((birds) => {
-                    this.setState({birds, isLoading: false})
+                    const newState = {
+                        birds,
+                        media,
+                        mediaType,
+                        isLoading: false,
+                    };
+                    this.setState(newState);
                 }).catch((error) => {
                     console.log(error);
                 });
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    _updateBirdPredictions() {
+        const media = this.props.navigation.state.params.mediaURI;
+        const mediaType = this.props.navigation.state.params.mediaType;
+        if (this.state.mediaURI !== media || this.state.mediaType !== mediaType) {
+            this._getBirdPredictions(media, mediaType);
         }
     }
 
@@ -106,7 +135,6 @@ class BirdResults extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         observedBirds: state.updateObservedBirds.observedBirds,
         prevResults: state.updatePreviousResults.prevResults
